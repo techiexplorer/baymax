@@ -1,0 +1,5 @@
+from Baymax import start_baymax_listener
+from baymaxInteract import greet_baymax, command_mode
+
+order_of_functioning = [greet_baymax, command_mode]
+start_baymax_listener(order_of_functioning)
