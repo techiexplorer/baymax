@@ -22,7 +22,7 @@ Phase-4:
 There are more phases. Need to re-think many things.
 
 
-####Inspired from the movie Big Hero 6
+Inspired from the movie Big Hero 6
 
 
 ![Baymax](./images/baymaxImg.png)
