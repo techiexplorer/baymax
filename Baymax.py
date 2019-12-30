@@ -1,4 +1,3 @@
-import os
 # This module performs conversions between Python values and C structs represented as Python bytes objects.
 import struct
 from datetime import datetime
@@ -22,9 +21,6 @@ class Baymax:
 
         # Only Baymax is there for now
         self.num_keywords = len(self.keyword_file_paths)
-        self.keyword_names = list()
-        for x in self.keyword_file_paths:
-            self.keyword_names.append(os.path.basename(x).replace('.ppn', '').replace('_compressed', '').split('_')[0])
 
     def get_baymax_porcupine(self):
         # New instance of Porcupine for Baymax
@@ -46,9 +42,10 @@ class Baymax:
             input_device_index=None
         )
 
-    def start_listening_for_baymax(self):
+    def start_listening_for_baymax(self, callback_functions):
         try:
             self.get_baymax_porcupine()
+            print("Listening....")
             while True:
                 self.audio_stream = self.get_audio_stream()
                 pcm = self.audio_stream.read(self.baymaxPorcupine.frame_length)
@@ -56,6 +53,8 @@ class Baymax:
                 result = self.baymaxPorcupine.process(pcm)
                 if self.num_keywords == 1 and result:
                     print(f'detected keyword Baymax {str(datetime.now())}')
+                    for func in callback_functions:
+                        func()
 
         finally:
             if self.baymaxPorcupine is not None:
@@ -68,4 +67,5 @@ class Baymax:
                 self.audio_instance.terminate()
 
 
-Baymax().start_listening_for_baymax()
+def start_baymax_listener(callback_functions):
+    Baymax().start_listening_for_baymax(callback_functions)
